@@ -1,27 +1,63 @@
 #TurtleGraphics.py
-#Name:
-#Date:
-#Assignment:
+#Name: Megann Wegner    
+#Date: 4/20/2025
+#Assignment: Lab 4
 
-import turtle #needed generally but not in CodeHS
-hideturtle() #hides the default turtle in CodeHS
+import turtle 
 
-def drawSquare(myTurtle, size):
+def drawPolygon(bob, sides, size):
+    direction = 360 / sides
+    for i in range(sides):
+        bob.forward(size)
+        bob.left(direction)
+
+def fillQuadrant(bob, quadrant, size):
+    half = size / 2
+    bob.fillcolor("green")
+
+    bob.penup()
+    if quadrant == 1:
+        bob.goto(-200, 0)
+    elif quadrant == 2:
+        bob.goto(0, 0)
+    elif quadrant == 3:
+        bob.goto(-200, -200)
+    elif quadrant == 4:
+        bob.goto(0, -200)
+    else:
+        print("Not a quadrant. ")
+        return
+
+    bob.pendown()
+    bob.begin_fill()
     for i in range(4):
-        myTurtle.forward(size)
-        myTurtle.right(90)
-
+        bob.forward(half)
+        bob.left(90)
+    bob.end_fill()
+    
+def drawSquaresInSquares(bob, total, start):
+    current_size = start
+    smaller = start/total
+    for n in range(total):
+        bob.penup()
+        bob.goto(-current_size / 2, -current_size / 2) 
+        bob.pendown()
+        drawPolygon(bob, 4, current_size)
+        current_size -= smaller
 
 def main():
-    myTurtle = turtle.Turtle()
-    # drawPolygon(myTurtle, 5) #draws a pentagon
-    # drawPolygon(myTurtle, 8) #draws an octogon
-
-    # fillCorner(myTurtle, 2) #draws a square with top right corner filled in.
-    # fillCorner(myTurtle, 3) #draws a square bottom left corner filled in.
-
-    # squaresInSquares(myTurtle, 5) #draws 5 concentric squares
-    # squaresInSquares(myTurtle, 3) #draws 3 concentric squares
-
-
+    bob = turtle.Turtle()
+    bob.penup()
+    bob.goto(-200, -200)
+    bob.pendown()
+    size = 400
+    drawPolygon(bob, 4, size)
+    quadrant = int(input("Pick quadrant 1, 2, 3, or 4. "))
+    fillQuadrant(bob, quadrant, size)
+   
+    start = 400
+    total = int(input("How many nested squares do you want? "))
+    drawSquaresInSquares(bob, total, start)
+    turtle.done()
+    
 main()
